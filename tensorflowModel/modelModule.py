@@ -11,7 +11,7 @@ import cv2
 class cnnTF:
     def __init__(self):
         self.dims = (256, 256, 3)
-        self.model = tf.keras.models.load_model('maskModel.h5')
+        self.model = tf.keras.models.load_model('maskModel2.h5')
         self.font = cv2.FONT_HERSHEY_SIMPLEX
 
     def b64Pred(self, b64String):
@@ -43,17 +43,20 @@ class cnnTF:
             preds = self.model.predict(np_resizedRGB)
             print(preds[0][0])
             message = ""
+            color = (0,0,0)
             if round(preds[0][0]) == 0:
                 message = "Wearing Mask"
+                color = (0,255,0)
             else:
                 message = "Not Wearing Mask"
+                color = (0,0,255)
 
             # Display the resulting frame
             cv2.putText(resized,
                         message,
-                        (50, 50),
+                        (0,25),
                         self.font, 1,
-                        (0, 255, 255),
+                        color,
                         2,
                         cv2.LINE_4)
             cv2.imshow('frame', resized)

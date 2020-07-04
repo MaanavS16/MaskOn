@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<html lang="en">
+	<meta charset="utf-8"/>
+	<title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='maskon.css') }}">
+</head>
+<body>
+<div id="container">
+	{% block body %}
+	{% endblock %}
+</div><!--container-->
+</body>
+</html>

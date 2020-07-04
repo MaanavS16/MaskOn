@@ -1,0 +1,38 @@
+#container {
+	margin: 0 auto;
+	padding: 3px;
+	text-align: center;
+}
+#header h1 {
+	font-size: 40px;
+	width: 100%;
+}
+#buttons {
+	margin: 5px;
+}
+button {
+	border: none;
+	border-radius: 5px;
+	padding: 5px;
+	background-color: #008CBA;
+	color: white;
+}
+button:hover, button:visited {
+	border: none;
+	border-radius: 5px;
+	padding: 5px;
+	background-color: #00b2ed;
+	color: black;
+}
+.videoElement {
+	width: 500px;
+	height: 375px;
+	background-color: #666;
+}
+
+.centered {
+	height:100%;
+	position: fixed;
+	top: 20%;
+	left: 20%;
+}

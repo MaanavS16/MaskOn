@@ -4,95 +4,153 @@
 	MaskOn
 {% endblock %}
 {% block body %}
-<div id='header'>
-	<h1>MaskOn</h1>
-</div>
-<div>
-	<p id="buttons">
-		<button id="btnStart">START RECORDING</button>
-		<button id="btnStop">STOP RECORDING</button>
-	</p>
-			
-	<video controls class="videoElement"></video>
-	<video controls id="vid2" class="videoElement"></video>
-</div>
-<script>
-        //no audio, takes video facing user (webcam)
-        let constraintObj = { 
-            audio: false, 
-            video: { 
-                facingMode: "user"
-            } 
-        };
-        
-        //handle older browsers that might implement getUserMedia in some way
-        if (navigator.mediaDevices === undefined) {
-            navigator.mediaDevices = {};
-            navigator.mediaDevices.getUserMedia = function(constraintObj) {
-                let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-                if (!getUserMedia) {
-                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-                }
-                return new Promise(function(resolve, reject) {
-                    getUserMedia.call(navigator, constraintObj, resolve, reject);
-                });
-            }
-        } else {
-            navigator.mediaDevices.enumerateDevices()
-            .then(devices => {
-                devices.forEach(device=>{
-                    console.log(device.kind.toUpperCase(), device.label);
-                    //, device.deviceId
-                })
-            })
-            .catch(err=>{
-                console.log(err.name, err.message);
-            })
-        }
 
-        navigator.mediaDevices.getUserMedia(constraintObj)
-        .then(function(mediaStreamObj) {
-            //connect the media stream to the first video element
-            let video = document.querySelector('video');
-            if ("srcObject" in video) {
-                video.srcObject = mediaStreamObj;
-            } else {
-                //old version
-                video.src = window.URL.createObjectURL(mediaStreamObj);
-            }
-            
-            video.onloadedmetadata = function(ev) {
-                //show in the video element what is being captured by the webcam
-                video.play();
-            };
-            
-            //add listeners for saving video/audio
-            let start = document.getElementById('btnStart');
-            let stop = document.getElementById('btnStop');
-            let vidSave = document.getElementById('vid2');
-            let mediaRecorder = new MediaRecorder(mediaStreamObj);
-            let chunks = [];
-            
-            start.addEventListener('click', (ev)=>{
-                mediaRecorder.start();
-                console.log(mediaRecorder.state);
-            })
-            stop.addEventListener('click', (ev)=>{
-                mediaRecorder.stop();
-                console.log(mediaRecorder.state);
-            });
-            mediaRecorder.ondataavailable = function(ev) {
-                chunks.push(ev.data);
-            }
-            mediaRecorder.onstop = (ev)=>{
-                let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
-                chunks = [];
-                let videoURL = window.URL.createObjectURL(blob);
-                vidSave.src = videoURL;
-            }
-        })
-        .catch(function(err) { 
-            console.log(err.name, err.message); 
-        });	
+<body>
+    <div id="camera" style="height:auto;width:auto; text-align:left;"></div>
+
+    <!--FOR THE SNAPSHOT-->
+    <input type="button" value="Take a Snap" id="btPic" onclick="takeSnapShot()" /> 
+    <p id="snapShot"></p>
+</body>
+<!-- <video id="webcam" autoplay playsinline width="640" height="480"></video>
+<canvas id="canvas" class="d-none"></canvas>
+<audio id="snapSound" src="audio/snap.wav" preload = "auto"></audio> -->
+<script>
+Webcam.set({
+        width: 256,
+        height: 256,
+        image_format: 'png'
+    });
+    Webcam.attach('#camera');
+    var runCam = false;
+    function changetoTrue(){
+        runCam = true;
+    }
+    // SHOW THE SNAPSHOT.
+    takeSnapShot = function () {
+        
+        Webcam.snap(function (data_uri) {
+            console.log(data_uri)
+        
+            document.getElementById('snapShot').innerHTML = 
+                '<img src="' + data_uri + '" width="70px" height="50px" />';
+        });
+    }
+    
+//     const webcamElement = document.getElementById('webcam');
+// const canvasElement = document.getElementById('canvas');
+// const snapSoundElement = document.getElementById('snapSound');
+// const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
+// webcam.set({
+//         width: 220,
+//         height: 190,
+//         image_format: 'jpeg',
+//         jpeg_quality: 100
+//     });
+// webcam.start()
+//   .then(result =>{
+//     console.log("webcam started");
+
+//         console.log("done");
+//         let picture = webcam.snap();
+//         console.log(picture);
+    
+    
+//   })
+//   .catch(err => {
+//     console.log(err);
+// });
+// for(var x = 0; x < 500; x++)
+// {
+
+// console.log("done");
+//         let picture = webcam.snap();
+//         console.log(picture);
+//}
+//document.querySelector('#download-photo').href = picture;
+        //no audio, takes video facing user (webcam)
+//         let constraintObj = {
+//             audio: false,
+//             video: {
+//                 facingMode: "user"
+//             }
+//         };
+        
+//         //handle older browsers that might implement getUserMedia in some way
+//         if (navigator.mediaDevices === undefined) {
+//             navigator.mediaDevices = {};
+//             navigator.mediaDevices.getUserMedia = function(constraintObj) {
+//                 let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+//                 if (!getUserMedia) {
+//                     return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+//                 }
+//                 return new Promise(function(resolve, reject) {
+//                     getUserMedia.call(navigator, constraintObj, resolve, reject);
+//                 });
+//             }
+//         } else {
+//             navigator.mediaDevices.enumerateDevices()
+//             .then(devices => {
+//                 devices.forEach(device=>{
+//                     console.log(device.kind.toUpperCase(), device.label);
+//                     //, device.deviceId
+//                 })
+//             })
+//             .catch(err=>{
+//                 console.log(err.name, err.message);
+//             })
+//         }
+
+//         navigator.mediaDevices.getUserMedia(constraintObj)
+//         .then(function(mediaStreamObj) {
+//             //connect the media stream to the first video element
+//             let video = document.querySelector('video');
+//             if ("srcObject" in video) {
+//                 video.srcObject = mediaStreamObj;
+//             } else {
+//                 //old version
+//                 video.src = window.URL.createObjectURL(mediaStreamObj);
+//             }
+
+//             video.onloadedmetadata = function(ev) {
+//                 //show in the video element what is being captured by the webcam
+//                 video.play();
+
+//             };
+
+//             //add listeners for saving video/audio
+//             let start = document.getElementById('btnStart');
+//             let stop = document.getElementById('btnStop');
+//             let vidSave = document.getElementById('vid2');
+//             let mediaRecorder = new MediaRecorder(mediaStreamObj);
+//             let chunks = [];
+
+//             start.addEventListener('click', (ev)=>{
+//                 mediaRecorder.start();
+//                 console.log(mediaRecorder.state);
+//             })
+//             stop.addEventListener('click', (ev)=>{
+//                 mediaRecorder.stop();
+//                 console.log(mediaRecorder.state);
+//             });
+//             mediaRecorder.ondataavailable = function(ev) {
+//                 chunks.push(ev.data);
+// 			var reader = new FileReader();
+//             //console.log(chunks.slice(0, 1));
+// reader.onload = function() {
+//     console.log(reader.result);
+// }
+// console.log(reader.readAsText(ev.data));
+//             }
+//             mediaRecorder.onstop = (ev)=>{
+//                 let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
+//                 chunks = [];
+//                 let videoURL = window.URL.createObjectURL(blob);
+//                 vidSave.src = videoURL;
+//             }
+//         })
+//         .catch(function(err) {
+//             console.log(err.name, err.message);
+//         });
 </script>
 {% endblock %}

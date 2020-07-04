@@ -57,8 +57,6 @@ class cnnTF:
                         2,
                         cv2.LINE_4)
             cv2.imshow('frame', resized)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
 
         # When everything done, release the capture
         cap.release()

@@ -23,16 +23,24 @@ class cnnTF:
 
     def launchFramePreds(self):
         cap = cv2.VideoCapture(0)
-
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
         while(True):
             # Capture frame-by-frame
             ret, frame = cap.read()
 
             # Our operations on the frame come here
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            resized = cv2.resize(frame, (256, 256), interpolation = cv2.INTER_AREA)
+            RGB = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+
+            np_resizedRGB = np.array(RGB)
+            np_resizedRGB = np.expand_dims(np_resizedRGB, axis=0)
+
+            preds = self.model.predict(np_resizedRGB)
+            print(preds[0][0])
 
             # Display the resulting frame
-            cv2.imshow('frame',gray)
+            cv2.imshow('frame', resized)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 

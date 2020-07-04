@@ -9,6 +9,7 @@ class cnnTF:
     def __init__(self):
         self.dims = (256, 256, 3)
         self.model = tf.keras.models.load_model('maskModel.h5')
+        self.font = cv2.FONT_HERSHEY_SIMPLEX
 
     def b64Pred(self, b64String):
         base64_decoded = base64.b64decode(b64String)
@@ -38,8 +39,20 @@ class cnnTF:
 
             preds = self.model.predict(np_resizedRGB)
             print(preds[0][0])
+            message = ""
+            if round(preds[0][0]) == 0:
+                message = "Wearing Mask"
+            else:
+                message = "Not Wearing Mask"
 
             # Display the resulting frame
+            cv2.putText(resized,
+                        message,
+                        (50, 50),
+                        self.font, 1,
+                        (0, 255, 255),
+                        2,
+                        cv2.LINE_4)
             cv2.imshow('frame', resized)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

@@ -1,12 +1,30 @@
-from flask import (Flask, render_template)
+from flask import (Flask, render_template,request)
+from modelModule import cnnTF
 app = Flask(__name__)
 
 
-@app.route('/')
+predictor = cnnTF()
+@app.route('/', methods=["GET", "POST"])
 def index():
-    return render_template(
-        'index.html'
-    )
+    if request.method == 'GET':
+        dta = request.args.get('imgdata')
+        if dta is not None:
+            dta = dta[22:]
+            print(type(dta))
+            prediction = predictor.b64Pred(dta)
+            print("\n", "PREDICTION IS", prediction)
+        return render_template(
+            'index.html',
+            dta = dta
+        )
+        
+    else:
+        return render_template(
+            'index.html'
+        )
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

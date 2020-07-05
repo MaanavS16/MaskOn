@@ -29,7 +29,7 @@ class cnnTF:
         cap = VideoCapture(0)
         cap.set(CAP_PROP_FRAME_WIDTH, 1920)
         cap.set(CAP_PROP_FRAME_HEIGHT, 1080)
-        for x in range(100):
+        for x in range(200):
             print("Iter is ", x)
             # Capture frame-by-frame
             ret, frame = cap.read()

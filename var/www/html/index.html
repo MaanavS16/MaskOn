@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+	MaskOn
+{% endblock %}
+{% block body %}
+<div id='header'>
+	<h1>MaskOn</h1>
+</div>
+	<div id="camera" style="height:auto; width:auto; text-align:left;"></div>
+	
+	<!--Prevents refresh-->
+	<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+	<!--FOR THE SNAPSHOT-->
+	<form id='imgform' method="get" target="dummyframe">
+		<input id='imgdata' type='hidden' value="" name="imgdata">
+		<input type="submit" value="Take a Snap" id="btPic" onclick="takeSnapShot()" /> 
+		<p id="snapShot"></p>
+	</form>
+	
+	<p id='dta'></p>
+</div>
+<script type="text/javascript">
+	Webcam.set({
+        width: 256,
+        height: 256,
+        image_format: 'png'
+    });
+    Webcam.attach('#camera');
+    let runCam = false;
+    function changetoTrue(){
+        runCam = true;
+    }
+    // SHOW THE SNAPSHOT.
+    let takeSnapShot = function () {
+			
+		Webcam.snap(function (data_uri) {
+			console.log(data_uri)
+		
+			document.getElementById('snapShot').innerHTML = 
+				'<img src="' + data_uri + '" width="70px" height="50px" />';
+
+			 document.getElementById('imgdata').value = '' + data_uri + '';
+			 document.getElementById('imgform').submit();
+			
+		});
+		
+    }
+	 
+</script>
+{% endblock %}

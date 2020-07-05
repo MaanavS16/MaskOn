@@ -8,7 +8,9 @@
 	<h1>MaskOn</h1>
 </div>
 	<div id="camera" style="height:auto; width:auto; text-align:left;"></div>
-
+	
+	<!--Prevents refresh-->
+	<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 	<!--FOR THE SNAPSHOT-->
 	<form id='imgform' method="get" target="dummyframe">
 		<input id='imgdata' type='hidden' value="" name="imgdata">
@@ -40,9 +42,6 @@
 
 			 document.getElementById('imgdata').value = '' + data_uri + '';
 			 document.getElementById('imgform').submit();
-			 
-			 
-			document.getElementById('dta').innerHTML = '{{dta}}';
 			
 		});
 		

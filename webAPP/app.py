@@ -13,6 +13,10 @@ def index():
             print(type(dta))
             prediction = predictor.b64Pred(dta)
             print("\n", "PREDICTION IS", prediction)
+            if prediction == 0:
+                dta = "Wearing mask"
+            else:
+                dta = "Not wearing mask"
         return render_template(
             'index.html',
             dta = dta

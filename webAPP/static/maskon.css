@@ -3,9 +3,14 @@
 	padding: 3px;
 	text-align: center;
 }
+body {
+	
+	background-color: #d8f5ff;
+}
 #header h1 {
 	font-size: 40px;
 	width: 100%;
+	font-family: 'Roboto Slab', serif;
 }
 #buttons {
 	margin: 5px;
@@ -24,15 +29,9 @@ button:hover, button:visited {
 	background-color: #00b2ed;
 	color: black;
 }
-.videoElement {
-	width: 500px;
-	height: 375px;
-	background-color: #666;
-}
-
-.centered {
-	height:100%;
-	position: fixed;
-	top: 20%;
-	left: 20%;
+#camera {
+	width: 100%;
+	margin: 0 auto;
+	border-radius: 5px;
+	border: 1px solid black;
 }

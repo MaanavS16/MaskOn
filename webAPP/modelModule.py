@@ -3,7 +3,7 @@ from PIL import Image
 import base64
 import io
 import numpy as np
-import cv2
+from cv2 import *
 import time
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -11,7 +11,7 @@ class cnnTF:
     def __init__(self):
         self.dims = (256, 256, 3)
         self.model = tf.keras.models.load_model('maskModel2.h5')
-        self.font = cv2.FONT_HERSHEY_SIMPLEX
+        self.font = FONT_HERSHEY_SIMPLEX
 
     def b64Pred(self, b64String):
         print("starting")
@@ -26,17 +26,17 @@ class cnnTF:
         return preds[0][0]
 
     def launchFramePreds(self):
-        cap = cv2.VideoCapture(0)
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        cap = VideoCapture(0)
+        cap.set(CAP_PROP_FRAME_WIDTH, 1920)
+        cap.set(CAP_PROP_FRAME_HEIGHT, 1080)
         for x in range(100):
             print("Iter is ", x)
             # Capture frame-by-frame
             ret, frame = cap.read()
 
             # Our operations on the frame come here
-            resized = cv2.resize(frame, (256, 256), interpolation = cv2.INTER_AREA)
-            RGB = cv2.cvtColor(resized, cv2.COLOR_BGR2RGB)
+            resized = resize(frame, (256, 256), interpolation = INTER_AREA)
+            RGB = cvtColor(resized, COLOR_BGR2RGB)
 
             np_resizedRGB = np.array(RGB)
             np_resizedRGB = np.expand_dims(np_resizedRGB, axis=0)
@@ -53,20 +53,20 @@ class cnnTF:
                 color = (0,0,255)
 
             # Display the resulting frame
-            cv2.putText(resized,
+            putText(resized,
                         message,
                         (0,25),
                         self.font, 1,
                         color,
                         2,
                         cv2.LINE_4)
-            cv2.imshow('frame', resized)
+            imshow('frame', resized)
             # time.sleep(0.1)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
+            if waitKey(1) & 0xFF == ord('q'):
                 break
         # When everything done, release the capture
         cap.release()
-        cv2.destroyAllWindows()
+        destroyAllWindows()
 
 
 #testObj = cnnTF()

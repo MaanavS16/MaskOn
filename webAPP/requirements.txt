@@ -20,5 +20,5 @@ PyYAML==5.4
 six==1.14.0
 virtualenv==20.0.17
 virtualenvwrapper-win==1.2.6
-Werkzeug==1.0.0
+Werkzeug==2.2.3
 zipp==3.1.0
